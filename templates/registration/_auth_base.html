@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block body_class %}page--auth{% endblock %}
+{% block content %}
+<section class="card card--form card--auth">
+  <a class="logo logo--center" href="{% url 'home' %}">
+    <svg class="logo__mark"><use href="#i-logo"></use></svg>
+    <span class="logo__text">Проверка чека</span>
+  </a>
+  {% block auth_content %}{% endblock %}
+</section>
+{% endblock %}

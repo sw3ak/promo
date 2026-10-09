@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 210" fill="none">
+  <defs>
+    <linearGradient id="paper" x1="40" y1="60" x2="150" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#fbfbff"/>
+      <stop offset="1" stop-color="#e4e3fb"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#c9c6f7"/>
+      <stop offset="1" stop-color="#9d97ee"/>
+    </linearGradient>
+  </defs>
+  <g fill="url(#mark)" font-family="Manrope, Arial, sans-serif" font-weight="700">
+    <text x="30" y="44" font-size="34" transform="rotate(-12 30 44)">?</text>
+    <text x="76" y="30" font-size="40">?</text>
+    <text x="122" y="48" font-size="32" transform="rotate(12 122 48)">?</text>
+  </g>
+  <path d="M52 66h86c6 0 9 4 9 10v96c0 0-3 6-9 6H64" fill="#d9d7f8"/>
+  <path d="M44 70c0-6 4-10 10-10h78c-5 2-8 7-8 12v104l-9 6-9-6-9 6-9-6-9 6-9-6-9 6-8-6z" fill="url(#paper)" stroke="#d3d0f6" stroke-width="2"/>
+  <path d="M132 60c7 0 12 5 12 12v10h-20V72c0-7 3-12 8-12z" fill="#ecebfd" stroke="#d3d0f6" stroke-width="2"/>
+  <text x="54" y="96" fill="#8f89ea" font-family="Manrope, Arial, sans-serif" font-size="24" font-weight="700">$</text>
+  <g stroke="#a7a2f0" stroke-width="3" stroke-linecap="round">
+    <path d="M74 84h36M74 94h30"/>
+    <path d="M58 112h40M58 124h36M58 136h40M58 148h34"/>
+    <path d="M58 162h50"/>
+  </g>
+  <g stroke="#8f89ea" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M106 112l4 4 7-8M106 126l4 4 7-8M106 140l4 4 7-8"/>
+  </g>
+  <path d="M34 186c8-10 18-8 26-2s18 8 26 0 18-8 26-2 16 6 24-2" stroke="#d3d0f6" stroke-width="2" stroke-linecap="round"/>
+</svg>

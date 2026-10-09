@@ -1,0 +1,12 @@
+{% extends "registration/_auth_base.html" %}
+{% block title %}Регистрация - Проверка чека{% endblock %}
+{% block auth_content %}
+  <h1 class="title">Регистрация участника</h1>
+  <p class="subtitle">Создайте аккаунт, чтобы участвовать в акции</p>
+  <form class="form form--auth" method="post">
+    {% csrf_token %}
+    {% include "registration/_form_fields.html" %}
+    <button class="btn btn--primary btn--block" type="submit">Зарегистрироваться</button>
+  </form>
+  <p class="auth__links">Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+{% endblock %}

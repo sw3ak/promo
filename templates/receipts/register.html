@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static receipt_tags %}
+
+{% block title %}Регистрация чека - Проверка чека{% endblock %}
+
+{% block content %}
+<section class="card card--form" aria-labelledby="register-title" data-receipt-card>
+  <a class="card__close" href="{% url 'receipts:cabinet' %}" aria-label="Закрыть и вернуться в личный кабинет">
+    <svg class="icon"><use href="#i-close"></use></svg>
+  </a>
+
+  <div data-form-view>
+    <h1 class="title" id="register-title">Регистрация чека</h1>
+    <p class="subtitle">Введите необходимые данные с чека</p>
+    <p class="period">
+      <svg class="icon icon--sm"><use href="#i-calendar"></use></svg>
+      <span>
+        Период акции: с {{ period.start|date:"d.m.Y" }} по {{ period.end|date:"d.m.Y" }}.
+        Сумма чека от {{ min_amount|rub }}.
+      </span>
+    </p>
+
+    <div class="alert alert--error" role="alert" data-form-alert {% if not error and not form.non_field_errors %}hidden{% endif %}>
+      <svg class="icon"><use href="#i-warning"></use></svg>
+      <span data-form-alert-text>{% if error %}{{ error }}{% else %}{{ form.non_field_errors.0 }}{% endif %}</span>
+    </div>
+
+    <form class="form"
+          method="post"
+          enctype="multipart/form-data"
+          action="{% url 'receipts:register' %}"
+          novalidate
+          data-receipt-form
+          data-promo-start="{{ period.start|date:'Y-m-d' }}"
+          data-promo-end="{{ period.end|date:'Y-m-d' }}"
+          data-min-amount="{{ min_amount }}"
+          data-photo-max-bytes="{{ photo_max_bytes }}">
+      {% csrf_token %}
+
+      <details class="qr" {% if form.qr_raw.value or form.qr_raw.errors %}open{% endif %}>
+        <summary class="qr__summary">
+          <svg class="icon"><use href="#i-qr"></use></svg>
+          <span>Заполнить по строке из QR-кода</span>
+        </summary>
+        {% include "partials/field.html" with field=form.qr_raw placeholder="t=20261015T1430&s=1500.00&fn=…&i=…&fp=…" required=False hint="Отсканируйте QR-код на чеке любым сканером и вставьте полученный текст." %}
+      </details>
+
+      {% include "partials/field.html" with field=form.fn placeholder="Введите ФН" inputmode="numeric" maxlength=16 %}
+      {% include "partials/field.html" with field=form.fd placeholder="Введите номер чека (ФД)" inputmode="numeric" maxlength=10 %}
+      {% include "partials/field.html" with field=form.fp placeholder="Введите ФП" inputmode="numeric" maxlength=10 %}
+      {% include "partials/field.html" with field=form.purchased_at type="datetime-local" min=period.start|date:"Y-m-d\T00:00" max=period.end|date:"Y-m-d\T23:59" %}
+      {% include "partials/field.html" with field=form.amount placeholder="0.00" inputmode="decimal" suffix="₽" maxlength=14 %}
+
+      <div class="field field--file {% if form.photo.errors %}field--invalid{% endif %}" data-field="photo">
+        <span class="field__label">Фото чека <span class="field__optional">необязательно</span></span>
+        <label class="upload" for="id_photo">
+          <input class="upload__input" id="id_photo" name="photo" type="file" accept="image/jpeg,image/png,image/webp" aria-describedby="photo-error photo-hint">
+          <img class="upload__preview" alt="" hidden data-photo-preview>
+          <span class="upload__icon" data-photo-icon><svg class="icon"><use href="#i-camera"></use></svg></span>
+          <span class="upload__text">
+            <span class="upload__title" data-photo-name>Выберите или перетащите фото</span>
+            <span class="upload__hint" id="photo-hint">JPEG, PNG или WEBP, до {{ photo_max_bytes|filesizeformat }}</span>
+          </span>
+          <button class="field__clear upload__clear" type="button" aria-label="Удалить фото" hidden data-photo-clear>
+            <svg class="icon icon--xs"><use href="#i-close"></use></svg>
+          </button>
+        </label>
+        <p class="field__error" id="photo-error" role="alert" {% if not form.photo.errors %}hidden{% endif %}>
+          <svg class="icon icon--sm"><use href="#i-warning"></use></svg>
+          <span data-error-text>{{ form.photo.errors.0 }}</span>
+        </p>
+      </div>
+
+      <button class="btn btn--primary btn--block" type="submit" data-submit>
+        <span data-submit-label>Загрузить</span>
+      </button>
+    </form>
+  </div>
+
+  <div class="result" hidden data-success-view tabindex="-1">
+    <span class="result__icon" aria-hidden="true"><svg><use href="#i-check"></use></svg></span>
+    <h2 class="result__title" data-success-title>Ваш чек загружен</h2>
+    <p class="result__text">Мы уже передали его на проверку модератору.<br>Статус чека обновится в личном кабинете.</p>
+    <div class="result__actions">
+      <a class="btn btn--primary" href="{% url 'receipts:cabinet' %}">На главную</a>
+      <a class="btn btn--ghost" href="{% url 'receipts:register' %}" data-register-more>Зарегистрировать ещё</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+  <script type="module" src="{% static 'js/receipt-form.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}Чек загружен - Проверка чека{% endblock %}
+
+{% block content %}
+<section class="card card--form">
+  <div class="result">
+    <span class="result__icon" aria-hidden="true"><svg><use href="#i-check"></use></svg></span>
+    <h1 class="result__title">Ваш чек загружен</h1>
+    <p class="result__text">Мы уже передали его на проверку модератору.<br>Статус чека обновится в личном кабинете.</p>
+    <div class="result__actions">
+      <a class="btn btn--primary" href="{% url 'receipts:cabinet' %}">На главную</a>
+      <a class="btn btn--ghost" href="{% url 'receipts:register' %}">Зарегистрировать ещё</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

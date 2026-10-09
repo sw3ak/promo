@@ -1,0 +1,4 @@
+<span class="badge badge--{{ status }}" data-badge>
+  <svg class="icon icon--sm"><use href="{% if status == 'accepted' %}#i-check-circle{% elif status == 'rejected' %}#i-x-circle{% else %}#i-clock{% endif %}"></use></svg>
+  <span data-badge-label>{{ label }}</span>
+</span>

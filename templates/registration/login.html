@@ -1,0 +1,16 @@
+{% extends "registration/_auth_base.html" %}
+{% block title %}Вход - Проверка чека{% endblock %}
+{% block auth_content %}
+  <h1 class="title">Вход</h1>
+  <p class="subtitle">Войдите, чтобы регистрировать чеки и следить за их статусом</p>
+  {% if form.non_field_errors %}
+    <div class="alert alert--error" role="alert"><svg class="icon"><use href="#i-warning"></use></svg><span>{{ form.non_field_errors.0 }}</span></div>
+  {% endif %}
+  <form class="form form--auth" method="post">
+    {% csrf_token %}
+    {% include "registration/_form_fields.html" %}
+    <input type="hidden" name="next" value="{{ next }}">
+    <button class="btn btn--primary btn--block" type="submit">Войти</button>
+  </form>
+  <p class="auth__links">Нет аккаунта? <a href="{% url 'signup' %}">Зарегистрироваться</a></p>
+{% endblock %}

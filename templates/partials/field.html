@@ -1,0 +1,31 @@
+<div class="field {% if field.errors %}field--invalid{% endif %}" data-field="{{ field.html_name }}">
+  <label class="field__label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+  <div class="field__control">
+    <input class="field__input{% if suffix %} field__input--suffix{% endif %}"
+           id="{{ field.id_for_label }}"
+           name="{{ field.html_name }}"
+           type="{{ type|default:'text' }}"
+           {% if inputmode %}inputmode="{{ inputmode }}"{% endif %}
+           {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+           {% if maxlength %}maxlength="{{ maxlength }}"{% endif %}
+           {% if min %}min="{{ min }}"{% endif %}
+           {% if max %}max="{{ max }}"{% endif %}
+           value="{{ field.value|default_if_none:'' }}"
+           autocomplete="off"
+           {% if required != False %}required aria-required="true"{% endif %}
+           aria-describedby="{{ field.html_name }}-error{% if hint %} {{ field.html_name }}-hint{% endif %}"
+           {% if field.errors %}aria-invalid="true"{% endif %}>
+    {% if suffix %}<span class="field__suffix" aria-hidden="true">{{ suffix }}</span>{% endif %}
+    {% if type != 'datetime-local' %}
+      <button class="field__clear" type="button" tabindex="-1" aria-label="Очистить поле" data-clear>
+        <svg class="icon icon--xs"><use href="#i-close"></use></svg>
+      </button>
+    {% endif %}
+    {% if required != False %}<span class="field__required" aria-hidden="true">*</span>{% endif %}
+  </div>
+  {% if hint %}<p class="field__hint" id="{{ field.html_name }}-hint">{{ hint }}</p>{% endif %}
+  <p class="field__error" id="{{ field.html_name }}-error" role="alert" {% if not field.errors %}hidden{% endif %}>
+    <svg class="icon icon--sm"><use href="#i-warning"></use></svg>
+    <span data-error-text>{{ field.errors.0 }}</span>
+  </p>
+</div>

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load receipt_tags %}
+{% block title %}Правила - Проверка чека{% endblock %}
+{% block content %}
+<section class="card card--wide card--text">
+  <h1 class="title">Правила акции</h1>
+  <ol class="rules">
+    <li>Совершите покупку в период акции: с <b>{{ promo_period.start|date:"d.m.Y" }}</b> по <b>{{ promo_period.end|date:"d.m.Y" }}</b> включительно. Учитывается дата, напечатанная на чеке.</li>
+    <li>Сумма чека - не меньше <b>{{ promo_min_amount|rub }}</b>.</li>
+    <li>Зарегистрируйте чек в личном кабинете: ФН, ФД, ФП, дату и сумму. Проще всего вставить строку из QR-кода - поля заполнятся сами.</li>
+    <li>Каждый чек участвует один раз. Повторно зарегистрировать тот же чек нельзя.</li>
+    <li>Модератор проверит чек - обычно это занимает до 5 рабочих дней. Если чек отклонён, причина будет указана в личном кабинете, а исправленный чек можно отправить повторно.</li>
+  </ol>
+  {% if user.is_authenticated %}
+    <a class="btn btn--primary" href="{% url 'receipts:register' %}"><svg class="icon"><use href="#i-receipt"></use></svg><span>Зарегистрировать чек</span></a>
+  {% else %}
+    <a class="btn btn--primary" href="{% url 'login' %}">Войти</a>
+  {% endif %}
+</section>
+{% endblock %}

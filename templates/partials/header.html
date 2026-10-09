@@ -1,0 +1,44 @@
+{% load ui %}
+<header class="header">
+  <div class="header__inner">
+    <div class="header__brand">
+      <a class="logo" href="{% url 'home' %}" aria-label="Проверка чека - на главную">
+        <svg class="logo__mark"><use href="#i-logo"></use></svg>
+        <span class="logo__text">Проверка чека</span>
+      </a>
+      <a class="header__back" href="{{ promo_site_url }}">
+        <svg class="icon"><use href="#i-chevron-left"></use></svg>
+        <span>На сайт</span>
+      </a>
+    </div>
+
+    <nav class="nav" aria-label="Основное меню">
+      <a class="nav__link {% nav_active 'receipts:cabinet' 'receipts:register' 'receipts:success' %}" href="{% url 'receipts:cabinet' %}">
+        <svg class="icon"><use href="#i-home"></use></svg>
+        <span>Личный кабинет</span>
+      </a>
+      <a class="nav__link {% nav_active 'rules' %}" href="{% url 'rules' %}">
+        <svg class="icon"><use href="#i-rules"></use></svg>
+        <span>Правила</span>
+      </a>
+      <a class="nav__link {% nav_active 'profile' %}" href="{% url 'profile' %}">
+        <svg class="icon"><use href="#i-user"></use></svg>
+        <span>Профиль</span>
+      </a>
+    </nav>
+
+    <div class="header__user">
+      <a class="bell" href="{% url 'receipts:cabinet' %}" aria-label="Уведомления">
+        <svg class="icon"><use href="#i-bell"></use></svg>
+        <span class="bell__dot" aria-hidden="true"></span>
+      </a>
+      <a class="user" href="{% url 'profile' %}">
+        <span class="user__avatar" aria-hidden="true">{{ user|initials }}</span>
+        <span class="user__text">
+          <span class="user__name">{{ user.get_full_name|default:user.get_username }}</span>
+          {% if user.email %}<span class="user__email">{{ user.email }}</span>{% endif %}
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
