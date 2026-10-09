@@ -1,0 +1,62 @@
+x-app-env: &app-env
+  env_file:
+    - path: .env.example
+      required: true
+    - path: .env
+      required: false
+  environment:
+    POSTGRES_HOST: db
+    POSTGRES_PORT: "5432"
+    REDIS_URL: redis://redis:6379/0
+    MEDIA_ROOT: /app/media
+
+services:
+  db:
+    image: postgres:16-alpine
+    <<: *app-env
+    environment: {}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  migrate:
+    build: .
+    <<: *app-env
+    command: ["sh", "-c", "python manage.py migrate --noinput && python manage.py ensure_superuser"]
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  web:
+    build: .
+    <<: *app-env
+    ports:
+      - "${WEB_PORT:-8000}:8000"
+    volumes:
+      - media:/app/media
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  media:
